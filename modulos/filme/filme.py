@@ -1,7 +1,8 @@
 from typing import Optional
 from datetime import date
+import padrao_retornos
 
-def criaFilme(titulo: Optional[str], sinopse: Optional[str], genero: Optional[str], duracao: Optional[float], classificacao: Optional[int], dataLancamento: Optional[str]) -> int:
+def criaFilme(titulo: str, sinopse: str, genero: str, duracao: float, classificacao: int, dataLancamento: str) -> int:
     """
     Cria um novo filme e o adiciona à lista de filmes se ainda não existir.
     """
@@ -17,10 +18,13 @@ def criaFilme(titulo: Optional[str], sinopse: Optional[str], genero: Optional[st
     }
 
     print(f"filme = {filme}")
-    if (filme not in listaFilmes) and (filme["titulo"] != None):
+
+    if filme in listaFilmes:
+        return padrao_retornos.imprime_mensagem(padrao_retornos.MENSAGENS.JA_EXISTE)
+    else:
         listaFilmes.append(filme)
-        return 1
-    
-    return 0
+        return padrao_retornos.imprime_mensagem(padrao_retornos.MENSAGENS.SUCESSO)
+
+    return padrao_retornos.imprime_mensagem(padrao_retornos.MENSAGENS.PARAMETRO_INVALIDO)
 
 listaFilmes = []

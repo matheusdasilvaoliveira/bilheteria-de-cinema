@@ -8,4 +8,4 @@ def test_criaFilme():
     filmeNaoCriado = filme.criaFilme(None, None, None, None, None, None)
     print(filmeNaoCriado)
 
-    assert filmeNaoCriado == 0, f"Esperado 0 mas retorna {filmeNaoCriado}"
+    assert filmeNaoCriado == 0, f"Esperado 0 mas retorna {filmeNaoCriado}" 
