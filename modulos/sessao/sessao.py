@@ -87,7 +87,7 @@ def assentos_disponiveis(sessao_id:int) -> int:
         return -1
     capacidade_total = sessao_encontrada["capacidade"]
     capacidade_atual = capacidade_total - len(sessao_encontrada["assentos_ocupados"])
-    return capacidade_atual
+    return capacidade_atual 
 
 
 ERRO_SESSAO_LOTADA = 5
@@ -109,17 +109,20 @@ def reserva_assento(sessao_id: int, numero_assento: int) -> int:
         return padrao_retornos.NAO_ENCONTRADO 
 
     capacidade_total = sessao_encontrada["capacidade"]
+    lista_de_ocupados = sessao_encontrada["assentos_ocupados"]
+
+    if len(lista_de_ocupados) >= capacidade_total:
+        return ERRO_SESSAO_LOTADA 
+
     if numero_assento > capacidade_total:
         return padrao_retornos.PARAMETRO_INVALIDO 
 
-    lista_de_ocupados = sessao_encontrada["assentos_ocupados"]
+    
     
     if numero_assento in lista_de_ocupados:
         return padrao_retornos.JA_EXISTE 
 
-    if len(lista_de_ocupados) >= capacidade_total:
-        return ERRO_SESSAO_LOTADA 
-    # Sucesso
+    
     lista_de_ocupados.append(numero_assento)
     
     return padrao_retornos.SUCESSO 
