@@ -27,4 +27,6 @@ def criaFilme(titulo: str, sinopse: str, genero: str, duracao: float, classifica
 
     return padrao_retornos.imprime_mensagem(padrao_retornos.MENSAGENS.PARAMETRO_INVALIDO)
 
+def busca_filme(filme_id):
+    pass
 listaFilmes = []
