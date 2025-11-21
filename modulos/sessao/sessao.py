@@ -1,9 +1,20 @@
 from datetime import date
-from modulos.filme.filme import listaFilmes
 from modulos.filme.filme import busca_filme 
 import padrao_retornos
 
+__all__ = [
+    "cria_sessao", 
+    "busca_sessao", 
+    "assentos_disponiveis", 
+    "reserva_assento", 
+    "obtem_todas_sessoes"
+]
+
 listaSessoes = []
+
+def obtem_todas_sessoes() -> list:
+    """Retorna uma cópia da lista de todas as sessões."""
+    return listaSessoes[:]
 
 def _valida_conflito_ou_duplicata(nova_sessao: dict) -> int:
     """
@@ -26,9 +37,43 @@ def _valida_conflito_ou_duplicata(nova_sessao: dict) -> int:
             
     return padrao_retornos.SUCESSO
 
+def _valida_horario(horario: str) -> bool:
+    """
+    Verifica se o horário está no formato estrito 'HH:MM'.
+    Retorna True se válido, False se inválido.
+    """
+
+    if len(horario) != 5:
+        return False
+    
+    if horario[2] != ':':
+        return False
+
+    partes = horario.split(':')
+    if len(partes) != 2:
+        return False
+        
+    hora_str, minuto_str = partes
+    
+    if not hora_str.isdigit() or not minuto_str.isdigit():
+        return False
+        
+
+    hora = int(hora_str)
+    minuto = int(minuto_str)
+    
+    if not (0 <= hora <= 23):
+        return False
+        
+    if not (0 <= minuto <= 59):
+        return False
+        
+    return True
+
+
 def cria_sessao (filme_id, sala, horario, capacidade, formato_exibicao) -> int:
     
-    # Validações de Parâmetro
+
     if not filme_id or not sala or not horario or not capacidade or not formato_exibicao:
         return padrao_retornos.PARAMETRO_INVALIDO
     
@@ -38,6 +83,10 @@ def cria_sessao (filme_id, sala, horario, capacidade, formato_exibicao) -> int:
     if formato_exibicao not in ["dublado", "legendado"]:
         return padrao_retornos.PARAMETRO_INVALIDO
     
+    if not _valida_horario(horario):
+        print(f"Erro: Horário inválido (recebido: '{horario}'). Use o formato 'HH:MM'.")
+        return padrao_retornos.PARAMETRO_INVALIDO
+
     # Validação de Filme
     filmeEncontrado = busca_filme(filme_id)
     if filmeEncontrado is None:
@@ -81,6 +130,9 @@ def busca_sessao(sessao_id: int) -> dict | None:
 
 
 def assentos_disponiveis(sessao_id:int) -> int:
+    """
+    Retornar a quantidade de assentos livres em uma sessão 
+    """
     sessao_encontrada = busca_sessao(sessao_id)
 
     if sessao_encontrada is None:
@@ -127,3 +179,62 @@ def reserva_assento(sessao_id: int, numero_assento: int) -> int:
     
     return padrao_retornos.SUCESSO 
 
+def lista_sessoes(filtro_filme_id: int = None, 
+                  formato_exibicao: str = None, 
+                  horario_minimo: str = None) -> tuple:
+    """
+    Lista as sessões cadastradas com filtros opcionais.
+    
+    Argumentos:
+        filtro_filme_id (int, opcional): ID do filme.
+        formato_exibicao (str, opcional): 'dublado' ou 'legendado'.
+        horario_minimo (str, opcional): Horário mínimo "HH:MM".
+
+    Retorna uma tupla contendo: (codigo,lista)
+    
+    """
+    
+    resultado = []
+    
+    for sessao in listaSessoes:
+        
+        #Filme
+        if filtro_filme_id is not None:
+            if sessao["filme_id"] != filtro_filme_id:
+                continue
+
+        #Formato
+        if formato_exibicao is not None:
+            if sessao["formato_exibicao"] != formato_exibicao:
+                continue # Pula
+
+        #Horário Mínimo (Comparação de String "HH:MM")
+        if horario_minimo is not None:
+            if sessao["horario"] < horario_minimo:
+                continue 
+
+        # Se sobreviveu a todos os 'continue', adiciona na lista final
+        resultado.append(sessao)
+
+    return padrao_retornos.SUCESSO, resultado
+
+def apaga_sessao(sessao_id: int) -> int:
+    """
+    Remove uma sessão do sistema, se ela não tiver ingressos vendidos.
+    """
+
+    if not isinstance(sessao_id, int) or sessao_id <= 0:
+        return padrao_retornos.PARAMETRO_INVALIDO
+
+
+    sessao_encontrada = busca_sessao(sessao_id)
+
+    if sessao_encontrada is None:
+        return padrao_retornos.NAO_ENCONTRADO
+
+    if len(sessao_encontrada["assentos_ocupados"]) > 0:
+        return padrao_retornos.JA_EXISTE 
+
+    listaSessoes.remove(sessao_encontrada)
+    
+    return padrao_retornos.SUCESSO

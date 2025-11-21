@@ -1,6 +1,7 @@
 import unittest
 import sys
 import os
+from unittest.mock import patch
 
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,155 +16,291 @@ from modulos.sessao.sessao import (
     cria_sessao, 
     busca_sessao, 
     assentos_disponiveis, 
-    reserva_assento,
+    reserva_assento, 
+    apaga_sessao, 
+    obtem_todas_sessoes,
     ERRO_SESSAO_LOTADA
 )
 
 
-def busca_filme_mentira(filme_id):
-    """
-    Esta função finge ser o módulo de filmes.
-    Regra simples:
-    - ID 1: Existe (Retorna um filme)
-    - Qualquer outro ID: Não existe (Retorna None)
-    """
-    if filme_id == 1:
-        return {"id": 1, "titulo": "Filme de Teste"}
-    return None
-
-
-class TestSessao(unittest.TestCase):
+class TestSessaoCompleto(unittest.TestCase):
 
     def setUp(self):
-        """
-        RODA ANTES DE CADA TESTE.
-        Faz a troca das funções reais pelas de mentira.
-        """
-        #  Backup das originais (para não quebrar o programa real)
-        self.busca_filme_original = modulo_sessao.busca_filme
-        self.lista_sessoes_original = modulo_sessao.listaSessoes
+        """Limpa apenas a lista de sessões local."""
+        modulo_sessao.listaSessoes.clear()
 
-        modulo_sessao.busca_filme = busca_filme_mentira
-        modulo_sessao.listaSessoes = []
+    # -----------------------------------------------------------------------
+    # TESTES DE CRIAÇÃO
+    # -----------------------------------------------------------------------
 
-    def tearDown(self):
-        """
-        RODA DEPOIS DE CADA TESTE.
-        Devolve as funções originais para o módulo.
-        """
-        modulo_sessao.busca_filme = self.busca_filme_original
-        modulo_sessao.listaSessoes = self.lista_sessoes_original
+    @patch('modulos.sessao.sessao.busca_filme') 
+    def test_01_cria_sessao_sucesso(self, mock_busca_filme):
+        print("\nTeste 01: Criar sessão com sucesso")
+        mock_busca_filme.return_value = {"id": 1, "titulo": "Filme Teste"}
 
-
-    def test_01_cria_sessao_sucesso(self):
-        print("\nTeste 01: Criar sessão com filme existente (ID 1)")
-        
-        #ID 1, busca_filme_mentira diz que existe
         retorno = cria_sessao(1, 5, "20:00", 100, "dublado")
         
+        # Verificação
         self.assertEqual(retorno, padrao_retornos.SUCESSO)
-        self.assertEqual(len(modulo_sessao.listaSessoes), 1)
+        self.assertEqual(len(obtem_todas_sessoes()), 1)
 
-    def test_02_cria_sessao_filme_inexistente(self):
-        print("Teste 02: Tentar criar com filme inexistente (ID 99)")
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_02_cria_sessao_filme_inexistente(self, mock_busca_filme):
+        print("Teste 02: Filme inexistente")
         
-        # ID 99, busca_filme_mentira encontra  None
+        mock_busca_filme.return_value = None
+
         retorno = cria_sessao(99, 5, "20:00", 100, "dublado")
         
         self.assertEqual(retorno, padrao_retornos.NAO_ENCONTRADO)
-        self.assertEqual(len(modulo_sessao.listaSessoes), 0)
+        self.assertEqual(len(obtem_todas_sessoes()), 0)
 
-    def test_03_conflito_horario(self):
-        print("Teste 03: Testar conflito de horário")
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_03_conflito_horario(self, mock_busca_filme):
+        print("Teste 03: Conflito de horário")
         
-        
-        sessao_existente = {
-            "id": 1, "filme_id": 1, "sala": 5, "horario": "20:00",
-            "capacidade": 100, "formato_exibicao": "dublado", "assentos_ocupados": []
-        }
-        modulo_sessao.listaSessoes.append(sessao_existente)
+        # MOCK: O filme sempre existe para esse teste
+        mock_busca_filme.return_value = {"id": 1, "titulo": "Filme Teste"}
 
-        # Tentamos criar outra na mesma sala/hora 
+        # 1. Cria a primeira sessão
+        cria_sessao(1, 5, "20:00", 100, "dublado")
+
+        # 2. Tenta criar a segunda (Mesma sala/horario)
         retorno = cria_sessao(1, 5, "20:00", 100, "legendado")
 
         self.assertEqual(retorno, padrao_retornos.JA_EXISTE)
 
-    def test_04_reserva_assento(self):
-        print("Teste 04: Fluxo de Reserva de Assento")
+    # -----------------------------------------------------------------------
+    # TESTES DE RESERVA
+    # -----------------------------------------------------------------------
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_04_reserva_assento(self, mock_busca_filme):
+        print("Teste 04: Fluxo de Reserva")
+        mock_busca_filme.return_value = {"id": 1}
         
-       
+        # Cria sessão (ID 1)
         cria_sessao(1, 5, "20:00", 100, "dublado") 
 
-        # Reserva válida
-        ret = reserva_assento(1, 10)
-        self.assertEqual(ret, padrao_retornos.SUCESSO)
-
-        # Verificar se salvou
+        # Reserva
+        retorno = reserva_assento(1, 10)
+        
+        self.assertEqual(retorno, padrao_retornos.SUCESSO)
         sessao = busca_sessao(1)
         self.assertIn(10, sessao["assentos_ocupados"])
 
-    def test_05_reserva_assento_lotado(self):
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_05_reserva_assento_lotado(self, mock_busca_filme):
         print("Teste 05: Reserva em sessão lotada")
+        mock_busca_filme.return_value = {"id": 10}
         
-        # Criamos sessão com capacidade 1
-        modulo_sessao.listaSessoes.append({
-            "id": 10, "capacidade": 1, "assentos_ocupados": [5] # Já cheia
-        })
+        # Cria sessão PEQUENA (Capacidade 1)
+        cria_sessao(10, 1, "20:00", 1, "dublado") # ID 1
+        reserva_assento(1, 1) # Assento válido 1
 
-        # Tenta reservar outro
-        ret = reserva_assento(10, 6)
+        ret = reserva_assento(1, 1) # Tenta o mesmo, ou outro, deve dar LOTADA primeiro
+
         self.assertEqual(ret, ERRO_SESSAO_LOTADA)
     
-    def test_09_assentos_sessao_inexistente(self):
-        print("Teste 09: Assentos de sessão que não existe")
-        # Tenta buscar assentos de um ID que não está na lista
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_06_reserva_assento_ocupado(self, mock_busca_filme):
+        print("Test 06: Falha ao reservar assento ocupado")
+        mock_busca_filme.return_value = {"id": 1}
+
+        cria_sessao(1, 5, "20:00", 100, "dublado")
+        reserva_assento(1, 10)  
+
+        # Tenta o mesmo assento
+        retorno = reserva_assento(1, 10)
+        self.assertEqual(retorno, padrao_retornos.JA_EXISTE)
+    
+    # -----------------------------------------------------------------------
+    # TESTES DE LEITURA
+    # -----------------------------------------------------------------------
+
+    def test_07_assentos_sessao_inexistente(self):
+        print("Teste 07: Assentos de sessão inexistente")
+        # Não precisamos de mock aqui pois busca_sessao só olha a lista local
         qtd = assentos_disponiveis(999)
         self.assertEqual(qtd, -1)
 
-    def test_10_assentos_sessao_lotada(self):
-        print("Teste 10: Assentos de sessão lotada (deve ser 0)")
-        # Cria uma sessão com capacidade 2 e 2 ocupados
-        modulo_sessao.listaSessoes.append({
-            "id": 50, 
-            "capacidade": 2, 
-            "assentos_ocupados": [1, 2]
-        })
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_08_assentos_sessao_lotada(self, mock_busca_filme):
+        print("Teste 08: Assentos de sessão lotada")
+        mock_busca_filme.return_value = {"id": 50}
         
-        qtd = assentos_disponiveis(50)
+        # Cria sessão capacidade 2
+        cria_sessao(50, 2, "20:00", 2, "dublado") # ID 1
+        
+        # Ocupa tudo
+        reserva_assento(1, 1)
+        reserva_assento(1, 2)
+        
+        qtd = assentos_disponiveis(1)
         self.assertEqual(qtd, 0)
 
-    def test_11_assentos_sessao_vazia(self):
-        print("Teste 11: Assentos de sessão vazia (deve ser igual a capacidade)")
-        modulo_sessao.listaSessoes.append({
-            "id": 51, 
-            "capacidade": 100, 
-            "assentos_ocupados": []
-        })
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_09_assentos_sessao_vazia(self, mock_busca_filme):
+        print("Teste 09: Assentos de sessão vazia")
+        mock_busca_filme.return_value = {"id": 51}
         
-        qtd = assentos_disponiveis(51)
+        cria_sessao(51, 1, "20:00", 100, "dublado")
+        
+        qtd = assentos_disponiveis(1)
         self.assertEqual(qtd, 100)
 
-    def test_12_validacao_sucesso_mesma_sala_horario_diferente(self):
-        print("Teste 12: Sucesso - Mesma sala, horário diferente")
-        # Cria a primeira: Sala 1 às 10:00
-        cria_sessao(1, 1, "10:00", 50, "dublado")
+    # -----------------------------------------------------------------------
+    # TESTES DE VALIDAÇÃO
+    # -----------------------------------------------------------------------
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_10_validacao_sucesso_mesma_sala_horario_diferente(self, mock_busca_filme):
+        print("Teste 10: Sucesso - Mesma sala, horário diferente")
+        mock_busca_filme.return_value = {"id": 1}
         
-        # Tenta criar a segunda: Sala 1 às 12:00 (Deve permitir!)
+        cria_sessao(1, 1, "10:00", 50, "dublado")
         retorno = cria_sessao(1, 1, "12:00", 50, "dublado")
         
         self.assertEqual(retorno, padrao_retornos.SUCESSO)
-        self.assertEqual(len(modulo_sessao.listaSessoes), 2)
+        self.assertEqual(len(obtem_todas_sessoes()), 2)
 
-    def test_13_validacao_sucesso_sala_diferente_mesmo_horario(self):
-        print("Teste 13: Sucesso - Sala diferente, mesmo horário")
-        # Cria a primeira: Sala 1 às 10:00
-        cria_sessao(1, 1, "10:00", 50, "dublado")
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_11_validacao_sucesso_sala_diferente_mesmo_horario(self, mock_busca_filme):
+        print("Teste 11: Sucesso - Sala diferente, mesmo horário")
+        mock_busca_filme.return_value = {"id": 1}
         
-        # Tenta criar a segunda: Sala 2 às 10:00 
+        cria_sessao(1, 1, "10:00", 50, "dublado")
         retorno = cria_sessao(1, 2, "10:00", 50, "dublado")
         
         self.assertEqual(retorno, padrao_retornos.SUCESSO)
-        self.assertEqual(len(modulo_sessao.listaSessoes), 2)
+        self.assertEqual(len(obtem_todas_sessoes()), 2)
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_12_cria_sessao_horario_invalido(self, mock_busca_filme):
+        print("Teste 12: Validação de formato de horário")
+        mock_busca_filme.return_value = {"id": 1}
+
+        self.assertEqual(cria_sessao(1, 5, "9:00", 100, "dublado"), padrao_retornos.PARAMETRO_INVALIDO)
+        self.assertEqual(cria_sessao(1, 5, "HH:MM", 100, "dublado"), padrao_retornos.PARAMETRO_INVALIDO)
+        self.assertEqual(cria_sessao(1, 5, "25:00", 100, "dublado"), padrao_retornos.PARAMETRO_INVALIDO)
+        
+        ret5 = cria_sessao(1, 5, "09:00", 100, "dublado")
+        self.assertEqual(ret5, padrao_retornos.SUCESSO)
+
+    # -----------------------------------------------------------------------
+    # TESTES DE FILTROS
+    # -----------------------------------------------------------------------
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_13_lista_sessoes_sem_filtro(self, mock_busca_filme):
+        print("Test 13: Listar tudo")
+        mock_busca_filme.return_value = {"id": 1} # Mock genérico
+
+        cria_sessao(10, 1, "14:00", 100, "dublado")
+        cria_sessao(10, 2, "20:00", 100, "legendado")
+        cria_sessao(20, 1, "18:00", 100, "dublado")
+
+        codigo, resultado = modulo_sessao.lista_sessoes()
+        self.assertEqual(len(resultado), 3)
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_14_lista_sessoes_filtro_filme(self, mock_busca_filme):
+        print("Test Lista 14: Filtro por Filme")
+        mock_busca_filme.return_value = {"id": 1}
+
+        cria_sessao(10, 1, "14:00", 100, "dublado")
+        cria_sessao(20, 1, "16:00", 100, "dublado")
+
+        codigo, resultado = modulo_sessao.lista_sessoes(filtro_filme_id=10)
+        self.assertEqual(len(resultado), 1)
+        self.assertEqual(resultado[0]["filme_id"], 10)
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_15_lista_sessoes_filtro_formato(self, mock_busca_filme):
+        print("Test Lista 15: Filtro por Formato")
+        mock_busca_filme.return_value = {"id": 1}
+
+        cria_sessao(1, 1, "14:00", 100, "dublado")
+        cria_sessao(1, 2, "16:00", 100, "legendado")
+
+        codigo, resultado = modulo_sessao.lista_sessoes(formato_exibicao="legendado")
+        self.assertEqual(len(resultado), 1)
+        self.assertEqual(resultado[0]["formato_exibicao"], "legendado")
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_16_lista_sessoes_filtro_horario(self, mock_busca_filme):
+        print("Test Lista 16: Filtro por Horário")
+        mock_busca_filme.return_value = {"id": 1}
+
+        cria_sessao(1, 1, "14:00", 100, "dublado") 
+        cria_sessao(1, 2, "18:00", 100, "dublado")
+        cria_sessao(1, 3, "20:00", 100, "dublado") 
+
+        codigo, resultado = modulo_sessao.lista_sessoes(horario_minimo="18:00")
+
+        self.assertEqual(len(resultado), 2)
+        horarios = [s["horario"] for s in resultado]
+        self.assertIn("18:00", horarios)
+        self.assertIn("20:00", horarios)
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_17_filtros_combinados_vazio(self, mock_busca_filme):
+        print("Test Lista 17: Filtros combinados vazio")
+        mock_busca_filme.return_value = {"id": 1}
+
+        cria_sessao(10, 1, "14:00", 100, "dublado")
+        cria_sessao(20, 2, "20:00", 100, "dublado")
+
+        codigo, resultado = modulo_sessao.lista_sessoes(filtro_filme_id=10, horario_minimo="18:00")
+        self.assertEqual(resultado, []) 
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_18_filtros_combinados_preenchido(self, mock_busca_filme):
+        print("Test 18: Filtros combinados sucesso")
+        mock_busca_filme.return_value = {"id": 1}
+        
+        cria_sessao(10, 1, "14:00", 100, "dublado")
+        cria_sessao(20, 2, "20:00", 100, "legendado")
+        cria_sessao(10, 3, "19:00", 100, "dublado") # ID 3: Bate com tudo
+
+        codigo, resultado = modulo_sessao.lista_sessoes(filtro_filme_id=10, horario_minimo="18:00")
+        
+        self.assertEqual(len(resultado), 1)
+        self.assertEqual(resultado[0]["id"], 3) 
+
+    # -----------------------------------------------------------------------
+    # TESTES DE EXCLUSÃO
+    # -----------------------------------------------------------------------
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_19_apaga_sessao_sucesso(self, mock_busca_filme):
+        print("Test 19: Apagar sessão sucesso")
+        mock_busca_filme.return_value = {"id": 1}
+        
+        cria_sessao(10, 1, "14:00", 100, "dublado") # ID 1
+
+        retorno = apaga_sessao(1)
+
+        self.assertEqual(retorno, padrao_retornos.SUCESSO)
+        self.assertEqual(len(obtem_todas_sessoes()), 0)
+
+    @patch('modulos.sessao.sessao.busca_filme')
+    def test_20_apaga_sessao_com_vendas(self, mock_busca_filme):
+        print("Test 20: Bloquear apagamento com vendas")
+        mock_busca_filme.return_value = {"id": 1}
+        
+        cria_sessao(10, 1, "14:00", 100, "dublado") # ID 1
+        reserva_assento(1, 50)
+
+        retorno = apaga_sessao(1)
+
+        self.assertEqual(retorno, padrao_retornos.JA_EXISTE) 
+        self.assertEqual(len(obtem_todas_sessoes()), 1) 
+
+    def test_21_apaga_sessao_inexistente(self):
+        print("Test 21: Apagar sessão inexistente")
+        retorno = apaga_sessao(999)
+        self.assertEqual(retorno, padrao_retornos.NAO_ENCONTRADO)
 
 if __name__ == '__main__':
     unittest.main()
