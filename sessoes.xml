@@ -1,0 +1,12 @@
+<sessoes>
+  <!--Dados de Sessões de Cinema-->
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>2</sala>
+    <horario>09:00</horario>
+    <capacidade>50</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+</sessoes>
