@@ -1,6 +1,12 @@
 from datetime import date
 from modulos.filme.filme import busca_filme 
 import padrao_retornos
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element, SubElement, Comment
+nome_arquivo = 'sessoes.xml'
+sessoesElement = Element('sessoes') 
+comment = Comment('Dados de Sessões de Cinema')
+sessoesElement.append(comment)
 
 __all__ = [
     "cria_sessao", 
@@ -11,6 +17,55 @@ __all__ = [
 ]
 
 listaSessoes = []
+
+def formata_saida_xml(elem):
+    """Formata o XML para ficar bonito (indentado)."""
+    ElementTree.indent(elem, space="  ")
+    return ElementTree.tostring(elem, encoding='unicode')
+
+def grava_dados_xml():
+    """Salva a estrutura atual do ElementTree no arquivo."""
+    with open(nome_arquivo, 'w') as file_object:
+        file_object.write(formata_saida_xml(sessoesElement))
+
+def ler_dados_xml():
+    """Lê o arquivo XML e popula a listaSessoes e o sessoesElement."""
+    global listaSessoes, sessoesElement
+    try:
+        with open(nome_arquivo, 'rt') as f:
+            tree = ElementTree.parse(f)
+            root = tree.getroot()
+
+        # Limpa a lista atual para não duplicar se chamar duas vezes
+        listaSessoes.clear()
+
+        for sessao_xml in root.findall('sessao'):
+            # Reconstrói o dicionário
+            dict_sessao = {
+                "id": int(sessao_xml.find('id').text),
+                "filme_id": int(sessao_xml.find('filme_id').text),
+                "sala": int(sessao_xml.find('sala').text),
+                "horario": sessao_xml.find('horario').text,
+                "capacidade": int(sessao_xml.find('capacidade').text),
+                "formato_exibicao": sessao_xml.find('formato_exibicao').text,
+                "assentos_ocupados": []
+            }
+            
+            # Recupera a lista de assentos ocupados
+            ocupados_element = sessao_xml.find('assentos_ocupados')
+            if ocupados_element:
+                for assento in ocupados_element.findall('assento'):
+                    dict_sessao["assentos_ocupados"].append(int(assento.text))
+
+            listaSessoes.append(dict_sessao)
+
+        # Atualiza a referência do Elemento Raiz para memória
+        sessoesElement = root
+
+    except FileNotFoundError:
+        # Se não existe, cria a estrutura básica
+        sessoesElement = Element('sessoes')
+        sessoesElement.append(Comment('Dados de Sessões de Cinema'))
 
 def obtem_todas_sessoes() -> list:
     """Retorna uma cópia da lista de todas as sessões."""
@@ -107,12 +162,29 @@ def cria_sessao (filme_id, sala, horario, capacidade, formato_exibicao) -> int:
     codigo_validacao = _valida_conflito_ou_duplicata(nova_sessao)
     if codigo_validacao != padrao_retornos.SUCESSO:
         return codigo_validacao
-        
-    # Sucesso e Persistência
+
+    sessao_xml = SubElement(sessoesElement, 'sessao')
+    
+    SubElement(sessao_xml, 'id').text = str(nova_sessao['id'])
+    SubElement(sessao_xml, 'filme_id').text = str(nova_sessao['filme_id'])
+    SubElement(sessao_xml, 'sala').text = str(nova_sessao['sala'])
+    SubElement(sessao_xml, 'horario').text = nova_sessao['horario']
+    SubElement(sessao_xml, 'capacidade').text = str(nova_sessao['capacidade'])
+    SubElement(sessao_xml, 'formato_exibicao').text = nova_sessao['formato_exibicao']
+    
+    # Container para assentos (vazio inicialmente)
+    SubElement(sessao_xml, 'assentos_ocupados')
+
+    grava_dados_xml()
+
+
+    # Adiciona na memória
     listaSessoes.append(nova_sessao)
     
-    return padrao_retornos.SUCESSO
-
+    return padrao_retornos.SUCESSO    
+    # Sucesso e Persistência
+    
+    
 
 
 def busca_sessao(sessao_id: int) -> dict | None:
@@ -176,9 +248,26 @@ def reserva_assento(sessao_id: int, numero_assento: int) -> int:
 
     
     lista_de_ocupados.append(numero_assento)
-    
-    return padrao_retornos.SUCESSO 
 
+    str_id = str(sessao_id)
+    
+    # Busca o elemento da sessão no XML
+    for sess_xml in sessoesElement.findall('sessao'):
+        if sess_xml.find('id').text == str_id:
+            # Encontrou. Agora busca a tag de assentos
+            assentos_xml = sess_xml.find('assentos_ocupados')
+            
+            # Adiciona o novo assento
+            novo_assento_elem = SubElement(assentos_xml, 'assento')
+            novo_assento_elem.text = str(numero_assento)
+            
+            grava_dados_xml()
+            break
+
+    
+    return padrao_retornos.SUCESSO
+
+    
 def lista_sessoes(filtro_filme_id: int = None, 
                   formato_exibicao: str = None, 
                   horario_minimo: str = None) -> tuple:
@@ -237,4 +326,14 @@ def apaga_sessao(sessao_id: int) -> int:
 
     listaSessoes.remove(sessao_encontrada)
     
+    str_id = str(sessao_id)
+    for sess_xml in sessoesElement.findall('sessao'):
+        if sess_xml.find('id').text == str_id:
+            # Remove o elemento da árvore
+            sessoesElement.remove(sess_xml)
+            grava_dados_xml()
+            break
+    
+    
     return padrao_retornos.SUCESSO
+ler_dados_xml()

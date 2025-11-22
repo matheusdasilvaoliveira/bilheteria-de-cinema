@@ -1,0 +1,39 @@
+<filmes>
+  <!--Dados de Filmes em Cartaz-->
+  <filme>
+    <id>1</id>
+    <titulo>Interstellar</titulo>
+    <sinopse>As reservas naturais da terra estão chegando ao fim e um grupo de astronautas recebe a missão de verificar possíveis planetas para receberem a população mundial, possibilitando a continuação da espécie. cooper é chamado para liderar o grupo e aceita a missão sabendo que pode nunca mais ver os filhos. ao lado de brand, jenkins e doyle, ele seguirá em busca de um novo lar.</sinopse>
+    <genero>Ficção Científica</genero>
+    <duracao>169.0</duracao>
+    <classificacao>10</classificacao>
+    <dataLancamento>06/11/2014</dataLancamento>
+  </filme>
+  <filme>
+    <id>2</id>
+    <titulo>Toy Story</titulo>
+    <sinopse>Em um quarto de criança, os brinquedos ganham vida quando não há ninguém por perto. woody, um boneco caubói, é o líder dos brinquedos e se sente ameaçado quando buzz lightyear, um moderno boneco astronauta, chega para disputar a atenção do garoto andy. a rivalidade entre os dois brinquedos acaba levando-os a uma aventura inesperada, onde precisam aprender a trabalhar juntos para voltar para casa.</sinopse>
+    <genero>Animação</genero>
+    <duracao>81.0</duracao>
+    <classificacao>0</classificacao>
+    <dataLancamento>22/11/1995</dataLancamento>
+  </filme>
+  <filme>
+    <id>3</id>
+    <titulo>Matrix</titulo>
+    <sinopse>Em um futuro distópico, a humanidade vive em uma realidade simulada chamada matrix, criada por máquinas inteligentes para subjugar os humanos enquanto suas mentes são usadas como fonte de energia. thomas anderson, um programador de computador que leva uma vida dupla como hacker sob o pseudônimo 'neo', descobre a verdade sobre a matrix e se junta a um grupo de rebeldes liderados por morpheus para lutar contra as máquinas e libertar a humanidade.</sinopse>
+    <genero>Ação</genero>
+    <duracao>136.0</duracao>
+    <classificacao>14</classificacao>
+    <dataLancamento>31/03/1999</dataLancamento>
+  </filme>
+  <filme>
+    <id>4</id>
+    <titulo>Lego Movie</titulo>
+    <sinopse>Em um mundo construído inteiramente de blocos de lego, um personagem comum chamado emmet é confundido com o 'especial', o salvador profetizado que deve impedir o tirano lord business de destruir o universo lego. juntamente com uma equipe de heróis excêntricos, emmet embarca em uma jornada épica para salvar o mundo e descobrir seu verdadeiro potencial.</sinopse>
+    <genero>Animação/Aventura</genero>
+    <duracao>100.0</duracao>
+    <classificacao>0</classificacao>
+    <dataLancamento>07/02/2014</dataLancamento>
+  </filme>
+</filmes>

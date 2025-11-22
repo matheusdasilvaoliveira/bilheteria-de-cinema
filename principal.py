@@ -54,7 +54,7 @@ def menu_filmes():
         elif opcao == '2':
             print("\n--- Catálogo de Filmes ---")
             # Chama a função de listagem
-            lista = Filme.lista_Filmes()
+            lista = Filme.lista_filmes()
             
             if not lista:
                 print("Nenhum filme cadastrado.")
