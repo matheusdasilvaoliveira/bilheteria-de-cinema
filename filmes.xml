@@ -1,39 +1,38 @@
 <filmes>
-  <!--Dados de Filmes em Cartaz-->
   <filme>
     <id>1</id>
-    <titulo>Interstellar</titulo>
-    <sinopse>As reservas naturais da terra est„o chegando ao fim e um grupo de astronautas recebe a miss„o de verificar possÌveis planetas para receberem a populaÁ„o mundial, possibilitando a continuaÁ„o da espÈcie. cooper È chamado para liderar o grupo e aceita a miss„o sabendo que pode nunca mais ver os filhos. ao lado de brand, jenkins e doyle, ele seguir· em busca de um novo lar.</sinopse>
-    <genero>FicÁ„o CientÌfica</genero>
-    <duracao>169.0</duracao>
-    <classificacao>10</classificacao>
-    <dataLancamento>06/11/2014</dataLancamento>
+    <titulo>Lego Movie</titulo>
+    <sinopse>Em um mundo constru√≠do inteiramente de blocos de lego, um personagem comum chamado emmet √© confundido com o 'especial', o salvador profetizado que deve impedir o tirano lord business de destruir o universo lego. juntamente com uma equipe de her√≥is exc√™ntricos, emmet embarca em uma jornada √©pica para salvar o mundo e descobrir seu verdadeiro potencial.</sinopse>
+    <genero>Anima√ß√£o/Aventura</genero>
+    <duracao>100.0</duracao>
+    <classificacao>0</classificacao>
+    <dataLancamento>07/02/2014</dataLancamento>
   </filme>
   <filme>
     <id>2</id>
-    <titulo>Toy Story</titulo>
-    <sinopse>Em um quarto de crianÁa, os brinquedos ganham vida quando n„o h· ninguÈm por perto. woody, um boneco caubÛi, È o lÌder dos brinquedos e se sente ameaÁado quando buzz lightyear, um moderno boneco astronauta, chega para disputar a atenÁ„o do garoto andy. a rivalidade entre os dois brinquedos acaba levando-os a uma aventura inesperada, onde precisam aprender a trabalhar juntos para voltar para casa.</sinopse>
-    <genero>AnimaÁ„o</genero>
-    <duracao>81.0</duracao>
-    <classificacao>0</classificacao>
-    <dataLancamento>22/11/1995</dataLancamento>
-  </filme>
-  <filme>
-    <id>3</id>
     <titulo>Matrix</titulo>
-    <sinopse>Em um futuro distÛpico, a humanidade vive em uma realidade simulada chamada matrix, criada por m·quinas inteligentes para subjugar os humanos enquanto suas mentes s„o usadas como fonte de energia. thomas anderson, um programador de computador que leva uma vida dupla como hacker sob o pseudÙnimo 'neo', descobre a verdade sobre a matrix e se junta a um grupo de rebeldes liderados por morpheus para lutar contra as m·quinas e libertar a humanidade.</sinopse>
-    <genero>AÁ„o</genero>
+    <sinopse>Em um futuro dist√≥pico, a humanidade vive em uma realidade simulada chamada matrix, criada por m√°quinas inteligentes para subjugar os humanos enquanto suas mentes s√£o usadas como fonte de energia. thomas anderson, um programador de computador que leva uma vida dupla como hacker sob o pseud√¥nimo 'neo', descobre a verdade sobre a matrix e se junta a um grupo de rebeldes liderados por morpheus para lutar contra as m√°quinas e libertar a humanidade.</sinopse>
+    <genero>A√ß√£o</genero>
     <duracao>136.0</duracao>
     <classificacao>14</classificacao>
     <dataLancamento>31/03/1999</dataLancamento>
   </filme>
   <filme>
+    <id>3</id>
+    <titulo>Interstellar</titulo>
+    <sinopse>As reservas naturais da terra est√£o chegando ao fim e um grupo de astronautas recebe a miss√£o de verificar poss√≠veis planetas para receberem a popula√ß√£o mundial, possibilitando a continua√ß√£o da esp√©cie. cooper √© chamado para liderar o grupo e aceita a miss√£o sabendo que pode nunca mais ver os filhos. ao lado de brand, jenkins e doyle, ele seguir√° em busca de um novo lar.</sinopse>
+    <genero>Fic√ß√£o Cient√≠fica</genero>
+    <duracao>169.0</duracao>
+    <classificacao>10</classificacao>
+    <dataLancamento>06/11/2014</dataLancamento>
+  </filme>
+  <filme>
     <id>4</id>
-    <titulo>Lego Movie</titulo>
-    <sinopse>Em um mundo construÌdo inteiramente de blocos de lego, um personagem comum chamado emmet È confundido com o 'especial', o salvador profetizado que deve impedir o tirano lord business de destruir o universo lego. juntamente com uma equipe de herÛis excÍntricos, emmet embarca em uma jornada Èpica para salvar o mundo e descobrir seu verdadeiro potencial.</sinopse>
-    <genero>AnimaÁ„o/Aventura</genero>
-    <duracao>100.0</duracao>
+    <titulo>Toy Story</titulo>
+    <sinopse>Em um quarto de crian√ßa, os brinquedos ganham vida quando n√£o h√° ningu√©m por perto. woody, um boneco caub√≥i, √© o l√≠der dos brinquedos e se sente amea√ßado quando buzz lightyear, um moderno boneco astronauta, chega para disputar a aten√ß√£o do garoto andy. a rivalidade entre os dois brinquedos acaba levando-os a uma aventura inesperada, onde precisam aprender a trabalhar juntos para voltar para casa.</sinopse>
+    <genero>Anima√ß√£o</genero>
+    <duracao>81.0</duracao>
     <classificacao>0</classificacao>
-    <dataLancamento>07/02/2014</dataLancamento>
+    <dataLancamento>22/11/1995</dataLancamento>
   </filme>
 </filmes>

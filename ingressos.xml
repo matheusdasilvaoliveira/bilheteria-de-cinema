@@ -1,0 +1,24 @@
+<ingressos>
+  <!--Dados de Ingressos do Sistema-->
+  <ingresso>
+    <id>1</id>
+    <cliente_id>10</cliente_id>
+    <sessao_id>1</sessao_id>
+    <numero_assento>1</numero_assento>
+    <preco>20</preco>
+  </ingresso>
+  <ingresso>
+    <id>2</id>
+    <cliente_id>11</cliente_id>
+    <sessao_id>1</sessao_id>
+    <numero_assento>2</numero_assento>
+    <preco>20</preco>
+  </ingresso>
+  <ingresso>
+    <id>3</id>
+    <cliente_id>10</cliente_id>
+    <sessao_id>2</sessao_id>
+    <numero_assento>1</numero_assento>
+    <preco>20</preco>
+  </ingresso>
+</ingressos>
