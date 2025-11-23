@@ -1,14 +1,266 @@
 <sessoes>
   <sessao>
     <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>20:00</horario>
+    <capacidade>1</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados>
+      <assento>50</assento>
+    </assentos_ocupados>
+  </sessao>
+  <sessao>
+    <id>1</id>
     <filme_id>1</filme_id>
     <sala>5</sala>
     <horario>20:00</horario>
     <capacidade>100</capacidade>
     <formato_exibicao>dublado</formato_exibicao>
-    <assentos_ocupados>
-      <assento>50</assento>
-    </assentos_ocupados>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>50</filme_id>
+    <sala>2</sala>
+    <horario>20:00</horario>
+    <capacidade>2</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>51</filme_id>
+    <sala>1</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>1</sala>
+    <horario>10:00</horario>
+    <capacidade>50</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>1</filme_id>
+    <sala>1</sala>
+    <horario>12:00</horario>
+    <capacidade>50</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>1</sala>
+    <horario>10:00</horario>
+    <capacidade>50</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>1</filme_id>
+    <sala>2</sala>
+    <horario>10:00</horario>
+    <capacidade>50</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>5</sala>
+    <horario>09:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>10</filme_id>
+    <sala>2</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>legendado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>3</id>
+    <filme_id>20</filme_id>
+    <sala>1</sala>
+    <horario>18:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>20</filme_id>
+    <sala>1</sala>
+    <horario>16:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>1</filme_id>
+    <sala>2</sala>
+    <horario>16:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>legendado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>1</filme_id>
+    <sala>2</sala>
+    <horario>18:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>3</id>
+    <filme_id>1</filme_id>
+    <sala>3</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>20</filme_id>
+    <sala>2</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>2</id>
+    <filme_id>20</filme_id>
+    <sala>2</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>legendado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>3</id>
+    <filme_id>10</filme_id>
+    <sala>3</sala>
+    <horario>19:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>10</filme_id>
+    <sala>1</sala>
+    <horario>14:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>5</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>5</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
+  </sessao>
+  <sessao>
+    <id>1</id>
+    <filme_id>1</filme_id>
+    <sala>5</sala>
+    <horario>20:00</horario>
+    <capacidade>100</capacidade>
+    <formato_exibicao>dublado</formato_exibicao>
+    <assentos_ocupados />
   </sessao>
   <sessao>
     <id>1</id>
