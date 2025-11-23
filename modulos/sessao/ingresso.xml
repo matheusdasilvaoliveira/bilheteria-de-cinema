@@ -1,0 +1,82 @@
+<ingressos>
+  <!-- Dados de Ingressos de Cinema -->
+
+  <!-- Sessão 1 – Filme 1 -->
+  <ingresso>
+    <id>1</id>
+    <cliente_id>10</cliente_id>
+    <sessao_id>1</sessao_id>
+    <numero_assento>1</numero_assento>
+    <preco>20.00</preco>
+  </ingresso>
+
+  <ingresso>
+    <id>2</id>
+    <cliente_id>11</cliente_id>
+    <sessao_id>1</sessao_id>
+    <numero_assento>2</numero_assento>
+    <preco>20.00</preco>
+  </ingresso>
+
+  <!-- Sessão 2 – Filme 1 -->
+  <ingresso>
+    <id>3</id>
+    <cliente_id>12</cliente_id>
+    <sessao_id>2</sessao_id>
+    <numero_assento>10</numero_assento>
+    <preco>25.00</preco>
+  </ingresso>
+
+  <ingresso>
+    <id>4</id>
+    <cliente_id>13</cliente_id>
+    <sessao_id>2</sessao_id>
+    <numero_assento>11</numero_assento>
+    <preco>25.00</preco>
+  </ingresso>
+
+  <!-- Sessão 3 – Filme 20 -->
+  <ingresso>
+    <id>5</id>
+    <cliente_id>14</cliente_id>
+    <sessao_id>3</sessao_id>
+    <numero_assento>5</numero_assento>
+    <preco>30.00</preco>
+  </ingresso>
+
+  <!-- Sessão 1 – Outro cliente para testar acumulo -->
+  <ingresso>
+    <id>6</id>
+    <cliente_id>15</cliente_id>
+    <sessao_id>1</sessao_id>
+    <numero_assento>3</numero_assento>
+    <preco>20.00</preco>
+  </ingresso>
+
+  <!-- Sessão 2 – Mais um ingresso (ajuda monitoramento) -->
+  <ingresso>
+    <id>7</id>
+    <cliente_id>16</cliente_id>
+    <sessao_id>2</sessao_id>
+    <numero_assento>12</numero_assento>
+    <preco>25.00</preco>
+  </ingresso>
+
+  <!-- Sessão para filme 10 (ex.: usada no monitoramento) -->
+  <ingresso>
+    <id>8</id>
+    <cliente_id>17</cliente_id>
+    <sessao_id>4</sessao_id>
+    <numero_assento>8</numero_assento>
+    <preco>22.00</preco>
+  </ingresso>
+
+  <ingresso>
+    <id>9</id>
+    <cliente_id>18</cliente_id>
+    <sessao_id>4</sessao_id>
+    <numero_assento>9</numero_assento>
+    <preco>22.00</preco>
+  </ingresso>
+
+</ingressos>
