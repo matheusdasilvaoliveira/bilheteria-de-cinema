@@ -215,4 +215,4 @@ cria_filme("Toy Story", "Em um quarto de criança, os brinquedos ganham vida qua
 cria_filme("Matrix", "Em um futuro distópico, a humanidade vive em uma realidade simulada chamada Matrix, criada por máquinas inteligentes para subjugar os humanos enquanto suas mentes são usadas como fonte de energia. Thomas Anderson, um programador de computador que leva uma vida dupla como hacker sob o pseudônimo 'Neo', descobre a verdade sobre a Matrix e se junta a um grupo de rebeldes liderados por Morpheus para lutar contra as máquinas e libertar a humanidade.", "Ação", 136.0, 14, "1999-03-31")
 cria_filme("Lego Movie", "Em um mundo construído inteiramente de blocos de LEGO, um personagem comum chamado Emmet é confundido com o 'Especial', o salvador profetizado que deve impedir o tirano Lord Business de destruir o universo LEGO. Juntamente com uma equipe de heróis excêntricos, Emmet embarca em uma jornada épica para salvar o mundo e descobrir seu verdadeiro potencial.", "Animação/Aventura", 100.0, 0, "2014-02-07")
 
-    # exibe_filmes()
+exibe_filmes()
