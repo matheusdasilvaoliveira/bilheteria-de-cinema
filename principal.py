@@ -32,7 +32,6 @@ def menu_filmes():
             print("\n--- Novo Filme ---")
             try:
                 # Coleta os dados solicitados
-                id_filme = int(input("ID do Filme: "))
                 titulo = input("Título: ")
                 genero = input("Gênero: ")
                 duracao = float(input("Duração (min): "))
@@ -40,10 +39,14 @@ def menu_filmes():
                 sinopse = input("Sinopse: ")
                 data_lancamento = input("Data de Lançamento (AAAA-MM-DD): ")
 
-                # Chama a função do módulo
+            
                 codigo_retorno = Filme.cria_filme(
-                    id_filme, titulo, genero, duracao, 
-                    classificacao, sinopse, data_lancamento
+                    titulo, 
+                    sinopse,  
+                    genero, 
+                    duracao, 
+                    classificacao, 
+                    data_lancamento
                 )
                 
                 padrao_retornos.imprime_mensagem(codigo_retorno)
@@ -454,95 +457,7 @@ def menu_sessoes():
         else:
             print("Opção inválida.")
 
-def menu_monitoramento():
-    while True:
-        print("\n" + "-"*30)
-        print("     RELATÓRIOS E MONITORAMENTO     ")
-        print("-" * 30)
-        print("1 - Receita e Ingressos de um Filme")
-        print("2 - Filme Mais Assistido")
-        print("3 - Receita e Ocupação de uma Sessão")
-        print("4 - Total Geral de Ingressos Vendidos")
-        print("0 - Voltar")
-        print("-" * 30)
-        
-        opcao = input("Escolha uma opção: ")
 
-        # --- Opção 1: Receita e Ingressos (Filme) ---
-        if opcao == '1':
-            print("\n--- Análise por Filme ---")
-            try:
-                id_filme = int(input("Digite o ID do Filme: "))
-                
-                # Chama a função do módulo
-                dados = Monitoramento.receita_e_ingressos(id_filme)
-                
-                if dados:
-                    print(f"\nResultados para o Filme ID {id_filme}:")
-                    print(f"- Ingressos Vendidos: {dados['ingressos_vendidos']}")
-                    print(f"- Receita Total:      R$ {dados['receita']:.2f}")
-                else:
-                    print("Erro: Filme não encontrado ou sem dados.")
-                    
-            except ValueError:
-                print("Erro: O ID deve ser um número inteiro.")
-
-        # --- Opção 2: Filme Mais Assistido ---
-        elif opcao == '2':
-            print("\n--- Filme Mais Assistido ---")
-            
-
-            todas_sessoes = Sessao.obtem_todas_sessoes()
-            
-
-            resultado = Monitoramento.filme_mais_assistido(todas_sessoes)
-            
-            if resultado:
-                print(f"\nO filme mais assistido é: {resultado['titulo_filme']}")
-                print(f"Total de Ingressos: {resultado['quantidade_ingressos']}")
-            else:
-                print("Não há dados suficientes (sessões ou ingressos) para análise.")
-
-        # --- Opção 3: Receita e Ocupação (Sessão) ---
-        elif opcao == '3':
-            print("\n--- Análise por Sessão ---")
-            try:
-                id_sessao = int(input("Digite o ID da Sessão: "))
-                
-                # Chama a função
-                dados = Monitoramento.receita_e_ocupacao_sessao(id_sessao)
-                
-                if dados:
-                    print(f"\nResultados para a Sessão ID {id_sessao}:")
-                    print(f"- Receita Gerada:     R$ {dados['receita']:.2f}")
-                    print(f"- Taxa de Ocupação:   {dados['ocupacao_porcentagem']:.1f}%")
-                else:
-                    print("Erro: Sessão não encontrada.")
-                    
-            except ValueError:
-                print("Erro: O ID deve ser um número inteiro.")
-
-        # --- Opção 4: Total Geral de Ingressos ---
-        elif opcao == '4':
-            print("\n--- Contagem Global ---")
-            
-            # Obtém a lista de sessões novamente
-            todas_sessoes = Sessao.obtem_todas_sessoes()
-            
-            # Chama a função
-            total = Monitoramento.conta_ingressos(todas_sessoes)
-            
-            if total is None:
-                print("Não existem sessões cadastradas.")
-            elif total == -1:
-                print("Erro: Parâmetros inválidos na contagem.")
-            else:
-                print(f"\nTotal de ingressos vendidos em TODAS as sessões: {total}")
-
-        elif opcao == '0':
-            break
-        else:
-            print("Opção inválida.")
 
 def exibe_menu_principal():
     print("\n" + "="*30)
@@ -552,7 +467,6 @@ def exibe_menu_principal():
     print("2 - Gerenciar CLIENTES")
     print("3 - Gerenciar SESSÕES")
     print("4 - Gerenciar INGRESSOS")
-    print("5 - MONITORAMENTO (Relatórios)")
     print("0 - Sair")
     print("="*30)
 
